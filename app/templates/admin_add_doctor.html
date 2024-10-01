@@ -1,0 +1,24 @@
+{% extends "layout.html" %} {% block content %}
+<h2 class="text-center">Add a New Doctor</h2>
+<form
+  method="post"
+  action="/admin/add_doctor"
+  class="mx-auto"
+  style="max-width: 500px"
+>
+  <div class="form-group">
+    <label for="doctor_name">Doctor Name:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="doctor_name"
+      name="doctor_name"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary btn-block">Add Doctor</button>
+</form>
+
+{% if message %}
+<div class="alert alert-success mt-3 text-center">{{ message }}</div>
+{% endif %} {% endblock %}

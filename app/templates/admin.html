@@ -1,0 +1,33 @@
+{% extends "layout.html" %} {% block content %}
+<h2 class="text-center">Admin: Export Rosters</h2>
+<form
+  method="get"
+  action="/admin/export"
+  class="mx-auto"
+  style="max-width: 500px"
+>
+  <div class="form-group">
+    <label for="start_date">Start Date:</label>
+    <input
+      type="date"
+      class="form-control"
+      id="start_date"
+      name="start_date"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="end_date">End Date:</label>
+    <input
+      type="date"
+      class="form-control"
+      id="end_date"
+      name="end_date"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary btn-block">
+    Export Rosters
+  </button>
+</form>
+{% endblock %}

@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+main {
+    padding: 1rem;
+}
+
+footer {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.fc-daygrid-day.fc-day-today {
+    background-color: #C1E1C1 !important; /* Current day: Pastel green */
+}
+
+.fc-daygrid-day.fc-day-past {
+    background-color: transparent !important; /* Past days: No color for past, non-rostered days */
+}
+
+.fc-daygrid-day.fc-day {
+    background-color: transparent !important; /* Empty days: No background color */
+}
+
+.fc-daygrid-day {
+    cursor: pointer; /* Add a pointer cursor to indicate the day is clickable */
+}
+
+.fc-daygrid-day:hover {
+    background-color: #FFF5E1 !important; /* Change to a light pastel color on hover */
+}

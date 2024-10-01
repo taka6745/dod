@@ -1,0 +1,114 @@
+{% extends "layout.html" %} {% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <h2 class="text-center">Submit Your Roster</h2>
+    <form
+      method="post"
+      action="/doctors/{{ doctor_id }}"
+      class="mx-auto"
+      style="max-width: 500px"
+    >
+      <div class="form-group">
+        <label for="doctor_name">Doctor Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="doctor_name"
+          name="doctor_name"
+          value="{{ doctor_name }}"
+          readonly
+        />
+      </div>
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          name="date"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="start_time">Start Time:</label>
+        <input
+          type="time"
+          class="form-control"
+          id="start_time"
+          name="start_time"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="end_time">End Time:</label>
+        <input
+          type="time"
+          class="form-control"
+          id="end_time"
+          name="end_time"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+
+    {% if message %}
+    <div class="alert alert-success mt-3 text-center">{{ message }}</div>
+    {% endif %}
+  </div>
+  <div class="col-md-6">
+    <div id="calendar" class="mb-4"></div>
+  </div>
+</div>
+
+<!-- Include FullCalendar CSS and JS -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.css"
+  rel="stylesheet"
+/>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var calendarEl = document.getElementById("calendar");
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: "dayGridMonth",
+      events: "/api/rosters/{{ doctor_id }}",
+      eventBackgroundColor: "#FFDDC1",
+      eventDisplay: "background",
+      dateClick: function (info) {
+        // Check if there are events on the clicked date
+        var events = calendar
+          .getEvents()
+          .filter((event) => event.startStr === info.dateStr);
+        if (events.length > 0) {
+          if (
+            confirm(
+              "Do you want to delete all rosters for " + info.dateStr + "?"
+            )
+          ) {
+            deleteDayRosters(info.dateStr);
+          }
+        } else {
+          document.getElementById("date").value = info.dateStr; // Fill the date in the form
+        }
+      },
+    });
+    calendar.render();
+  });
+
+  function deleteDayRosters(date) {
+    fetch(`/api/rosters/delete-day/${date}`, { method: "DELETE" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("All rosters deleted successfully for " + date);
+          window.location.reload(); // Reload to update the calendar
+        } else {
+          alert("Failed to delete rosters for " + date);
+        }
+      })
+      .catch((error) => alert("Error deleting rosters for " + date));
+  }
+</script>
+{% endblock %}
